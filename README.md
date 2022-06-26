@@ -216,17 +216,17 @@ How does this modify our architecture? Let's see:
 
 Stack on Digitalocean & protection with Cloudflare Access
 
-We have now exposed our Grafana instance using a secure Cloudflare Tunnel. This means that our VM is connected to nearby Cloudflare datacenters and is ready to accept authorized traffic to our Grafana.
+We have now exposed our Grafana instance using a secure Cloudflare Tunnel. https://www.cloudflare.com/en-gb/products/tunnel/ This means that our VM is connected to nearby Cloudflare datacenters and is ready to accept authorized traffic to our Grafana.
 
-To determine who can reach it, we use Cloudflare Access to define our Grafana application and attach security policies to it. In my sample Terraform setup, I just specify an authorized e-mail address that will be able to receive the standard One-Time-Pin for authentication.
+To determine who can reach it, we use Cloudflare Access https://www.cloudflare.com/en-gb/teams/access/ to define our Grafana application and attach security policies to it. In my sample Terraform setup, I just specify an authorized e-mail address that will be able to receive the standard One-Time-Pin for authentication. https://developers.cloudflare.com/cloudflare-one/identity/one-time-pin
 
 If you look at the firewall configuration of the Digitalocean VM, inbound HTTP (s) traffic is not allowed. The only way someone can reach the Grafana is via Cloudflare Access and the Tunnel.
 
 This means we can access our monitoring tools from anywhere 🏝️as long as we have a reliable internet connection. We can also do it securely, since it's protected by Access.
 
-A final parting thought: when you manage your infrastructure as code, it is easier to keep it monitored and secure with automated checks. An example of this is the tfsec-pr-commenter-action (available here) that can be added to your Github workflow. The action will scan your Terraform configuration and leave useful comments for potentially dangerous configurations.
+A final parting thought: when you manage your infrastructure as code, it is easier to keep it monitored and secure with automated checks. An example of this is the `tfsec-pr-commenter-action` (available here: https://github.com/aquasecurity/tfsec-pr-commenter-action) that can be added to your Github workflow. The action will scan your Terraform configuration and leave useful comments for potentially dangerous configurations.
 
-For example, you can see the comments it left when I committed my initial template - in my case warning that my Digitalocean firewall template is very permissive about outgoing traffic (and also for inbound ICMP traffic). As this is only a tutorial, and the infrastructure short lived, that's fine. But if this was a setup for production it would be very handy to have a chance of reviewing such comments from the automated template review.
+For example, you can see the comments it left when I committed my initial template - in my case warning that my Digitalocean firewall template is very permissive about outgoing traffic (and also for inbound ICMP traffic). As this is only a tutorial, and the infrastructure short lived, that's fine. But if this was a setup for production it would be very handy to have a chance of reviewing such comments from the automated template review. https://github.com/Vortexmind/terraform-cloudflare-prometheus-grafana/pull/1
 
 At the very least this is much better than managing all your set-up manually and then forgetting open ports! 💣
 
