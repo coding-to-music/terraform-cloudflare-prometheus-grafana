@@ -10,7 +10,7 @@ https://www.paolotagliaferri.com/monitor-your-website-with-cloudflare-prometheus
 
 https://github.com/Vortexmind/terraform-cloudflare-prometheus-grafana
 
-![Grafana screenshot](https://prometheus.io/assets/grafana_prometheus.png)](https://prometheus.io/assets/grafana_prometheus.png)
+![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/grafana_prometheus.png?raw=true)
 
 ## Restart grafana-server:
 
