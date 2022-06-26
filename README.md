@@ -25,6 +25,36 @@ sudo systemctl restart grafana-server
 ## Environment variables:
 
 ```java
+        "AccountTag"   : "${account_id}",
+        "TunnelID"     : "${cloudflare_tunnel_id}",
+        "TunnelName"   : "${cloudflare_tunnel_name}",
+        "TunnelSecret" : "${cloudflare_tunnel_secret}"
+
+github_token: ${{ github.token }}
+
+CF_API_TOKEN=${cloudflare_analytics_api_token}
+
+resource "digitalocean_droplet" "prometheus_analytics" {
+  image  = var.digitalocean_droplet_image
+  name   = "cloudflare-prometheus-analytics"
+  region = var.digitalocean_droplet_region
+  size   = var.digitalocean_droplet_size
+  ssh_keys = [
+    data.digitalocean_ssh_key.default.id
+  ]
+  user_data = templatefile("${path.module}/cloud-init/bootstrap-cloud-init.yaml", {
+      account_id = var.cloudflare_account_id
+      fqdn = local.cloudflare_fqdn
+      ssh_fqdn = local.cloudflare_ssh_fqdn
+
+Configure the Docker Containers (on Synology DSM)
+Let's set up the exporter first. We will use the lablabs/cloudflare_exporter image and set it up with the following environment variables:
+
+CF_ZONES: the zone ID from your Cloudflare Zone's Overview panel.
+CF_API_TOKEN: the Analytics token you created earlier in the Cloudflare Dashboard.
+LISTEN: If you follow the example, use:9091 (this will make the exporter listen on all interfaces on the 9091 port for incoming Prometheus scraping requests).
+
+First, let's save the prometheus.yml configuration file we described above somewhere on our DSM. I usually create a folder for each container I am running and place all the related files there.
 
 ```
 
