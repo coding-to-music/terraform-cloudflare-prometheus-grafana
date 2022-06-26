@@ -148,13 +148,13 @@ As discussed, we need a Prometheus Exporter that is capable of pulling the data 
 
 For our example, we will use the exporter available at https://github.com/lablabs/cloudflare-exporter. There is also a nice article explaining how it was made and also explaining why the concepts behind our simple home-baked setup can be extended to day-to-day production setups. https://www.lablabs.io/blog/improving-your-monitoring-setup-by-integrating-cloudflares-analytics-data-into-prometheus-and-grafana
 
-The exporter is also available as a Docker Image on DockerHub, which is exactly what we need.
+The exporter is also available as a Docker Image on DockerHub, which is exactly what we need. https://hub.docker.com/r/lablabs/cloudflare_exporter
 
-To configure it, we need to grab a Cloudflare API Token which has Read access for Analytics for the Cloudflare zone we want to monitor. The exporter supports also the Cloudflare Global API Key however following the principle of "least privilege" it is recommended to use the token instead. If you are not sure, refer to the step-by-step guide to create your token.
+To configure it, we need to grab a Cloudflare API Token which has Read access for Analytics for the Cloudflare zone we want to monitor. The exporter supports also the Cloudflare Global API Key however following the principle of "least privilege" it is recommended to use the token instead. If you are not sure, refer to the step-by-step guide to create your token. https://developers.cloudflare.com/analytics/graphql-api/getting-started/authentication/api-token-auth
 
 ## Configure the Docker Containers (on Synology DSM)
 
-Let's set up the exporter first. We will use the lablabs/cloudflare_exporter image and set it up with the following environment variables:
+Let's set up the exporter first. We will use the `lablabs/cloudflare_exporter` image and set it up with the following environment variables:
 
 - `CF_ZONES`: the zone ID from your Cloudflare Zone's Overview panel.
 - `CF_API_TOKEN`: the Analytics token you created earlier in the Cloudflare Dashboard.
@@ -166,22 +166,23 @@ Let's set up the exporter first. We will use the lablabs/cloudflare_exporter ima
 
 The exporter container is up and running
 
-Now that we have the exporter up and running, we can test that it is working correctly by hitting the metrics endpoint http://<your DSM IP/hostname>:9091/metrics. If everything is correct, we should see some metrics ready to be consumed by Prometheus, which is what we need to start up next.
+Now that we have the exporter up and running, we can test that it is working correctly by hitting the metrics endpoint `http://<your DSM IP/hostname>:9091/metrics`. If everything is correct, we should see some metrics ready to be consumed by Prometheus, which is what we need to start up next.
 
-First, let's save the prometheus.yml configuration file we described above somewhere on our DSM. I usually create a folder for each container I am running and place all the related files there.
+First, let's save the `prometheus.yml` configuration file we described above somewhere on our DSM. I usually create a folder for each container I am running and place all the related files there.
 
-We will be using the prom/prometheus image we downloaded earlier. For this basic setup, there isn't much to set up. We just need to map our configuration file from the path on the Synology to /etc/prometheus/prometheus.yml (which is where it will be expected in the container).
+We will be using the `prom/prometheus` image we downloaded earlier. For this basic setup, there isn't much to set up. We just need to map our configuration file from the path on the Synology to `/etc/prometheus/prometheus.yml` (which is where it will be expected in the container).
 
 The Prometheus data will be persisted in a volume that is automatically created with the container. For production deployments, the documentation recommends using a named volume instead, but for our purposes, this will be more than enough.
 
-By default, Prometheus will run on port 9090. If that works for you, you can just start the container on the host network, otherwise map a different port on the host side.
+By default, Prometheus will run on port `9090`. If that works for you, you can just start the container on the host network, otherwise map a different port on the host side.
 
-Once you started the container, you can head to http://<your DSM IP/hostname>:9090/targets: if everything looks good, you should reach Prometheus's web interface. The Targets page will show you what is being scraped and in our case, we should see some statistics about our only target so far, the exporter. Make sure the State is UP meaning they can talk to each other 😎.
-
-Prometheus Web UI: Targets
-As you can see, you can use Prometheus's Web UI to inspect the metrics. However, it will be much easier to set up some swanky dashboards with Grafana!
+Once you started the container, you can head to http://<your DSM IP/hostname>:9090/targets: if everything looks good, you should reach Prometheus's web interface. The `Targets` page will show you what is being scraped and in our case, we should see some statistics about our only target so far, the exporter. Make sure the `State` is `UP` meaning they can talk to each other 😎.
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-4.avif?raw=true)
+
+Prometheus Web UI: Targets
+
+As you can see, you can use Prometheus's Web UI to inspect the metrics. However, it will be much easier to set up some swanky dashboards with Grafana!
 
 ## Add Prometheus as a Grafana Data Source
 
