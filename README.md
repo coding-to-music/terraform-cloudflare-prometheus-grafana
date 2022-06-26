@@ -12,6 +12,8 @@ https://github.com/Vortexmind/terraform-cloudflare-prometheus-grafana
 
 Example of a Grafana dashboard, using data from Prometheus:
 
+![The exporter container up and running](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image2-5.avif?raw=true)
+
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/grafana_prometheus.png?raw=true)
 
 Not needed:
@@ -157,11 +159,10 @@ Let's set up the exporter first. We will use the lablabs/cloudflare_exporter ima
 - `CF_ZONES`: the zone ID from your Cloudflare Zone's Overview panel.
 - `CF_API_TOKEN`: the Analytics token you created earlier in the Cloudflare Dashboard.
 - `LISTEN`: If you follow the example, use:9091 (this will make the exporter listen on all interfaces on the 9091 port for incoming Prometheus scraping requests).
+
   The container can run as unprivileged, and since it shouldn't consume too many resources you can configure it with limits just to be on the safe side. In my case, I have used the host network without port mappings.
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-3.webp?raw=true)
-
-![The exporter container up and running](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image2-5.avif?raw=true)
 
 The exporter container is up and running
 
@@ -182,11 +183,13 @@ As you can see, you can use Prometheus's Web UI to inspect the metrics. However,
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-4.avif?raw=true)
 
-Add Prometheus as a Grafana Data Source
+## Add Prometheus as a Grafana Data Source
 
 Assuming you already have Grafana up and running, head to Configuration > Data Sources and add your Prometheus instance.
 
-## Add Prometheus as Data Source in Grafana
+![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
+
+Add Prometheus as Data Source in Grafana
 
 Because so far we are being naughty, and we are setting everything up on unencrypted HTTP, all we need to do here is to add the URL to our Prometheus instance (on the configured port) and select Server access. Save and ... that was it!: Grafana can now consume all the metrics stored in Prometheus!
 
@@ -196,7 +199,7 @@ This one is also easy. The folks at Labyrinth Labs have shared a handy dashboard
 
 Simply import the dashboard and point it to your Prometheus instance, and watch out for the flood of data 🌊
 
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
+![The exporter container up and running](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image2-5.avif?raw=true)
 
 Labyrinth Labs's Cloudflare Analytics Grafana Dashboard
 
