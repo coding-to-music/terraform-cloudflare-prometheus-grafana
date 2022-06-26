@@ -16,10 +16,6 @@ Example of a Grafana dashboard, using data from Prometheus:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/grafana_prometheus.png?raw=true)
 
-Not needed:
-
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare---Digital-Ocean-1.webp?raw=true)
-
 ## Restart grafana-server:
 
 ```
@@ -186,7 +182,7 @@ As you can see, you can use Prometheus's Web UI to inspect the metrics. However,
 
 ## Add Prometheus as a Grafana Data Source
 
-Assuming you already have Grafana up and running, head to Configuration > Data Sources and add your Prometheus instance.
+Assuming you already have Grafana up and running, head to `Configuration > Data Sources` and add your Prometheus instance.
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
 
@@ -194,9 +190,9 @@ Add Prometheus as Data Source in Grafana
 
 Because so far we are being naughty, and we are setting everything up on unencrypted HTTP, all we need to do here is to add the URL to our Prometheus instance (on the configured port) and select Server access. Save and ... that was it!: Grafana can now consume all the metrics stored in Prometheus!
 
-Grafana Dashboard
+## Grafana Dashboard
 
-This one is also easy. The folks at Labyrinth Labs have shared a handy dashboard that can be easily imported and used directly. You can also use it as a starting point to create your panels.
+This one is also easy. The folks at Labyrinth Labs have shared a handy dashboard that can be easily imported and used directly. You can also use it as a starting point to create your panels. https://grafana.com/grafana/dashboards/13133
 
 Simply import the dashboard and point it to your Prometheus instance, and watch out for the flood of data 🌊
 
@@ -210,10 +206,16 @@ Well, it was easy to get it all up and running huh?
 
 To make it a bit more interesting for you, I have created another version in Terraform. It runs the same above stack (Grafana / Prometheus / Exporter) in a Digitalocean VM. Further to that, it exposes the Grafana instance securely via a combination of Cloudflare Access and Cloudflare Tunnel. Feel free to pull the code from https://github.com/Vortexmind/terraform-cloudflare-prometheus-grafana
 
+```
 git clone git@github.com:Vortexmind/terraform-cloudflare-prometheus-grafana.git
+```
+
 How does this modify our architecture? Let's see:
 
+![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare---Digital-Ocean-1.webp?raw=true)
+
 Stack on Digitalocean & protection with Cloudflare Access
+
 We have now exposed our Grafana instance using a secure Cloudflare Tunnel. This means that our VM is connected to nearby Cloudflare datacenters and is ready to accept authorized traffic to our Grafana.
 
 To determine who can reach it, we use Cloudflare Access to define our Grafana application and attach security policies to it. In my sample Terraform setup, I just specify an authorized e-mail address that will be able to receive the standard One-Time-Pin for authentication.
