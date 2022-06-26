@@ -22,7 +22,7 @@ Example of a Grafana dashboard, using data from Prometheus:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
 
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare-1.avif?raw=true)
+Not needed:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare---Digital-Ocean-1.webp?raw=true)
 
@@ -93,7 +93,10 @@ By the way - if you are interested in Grafana and Smart Home - I wrote about it 
 Target Architecture
 As usual, I like to illustrate what we are set to achieve with a handy diagram (made with the awesome Excalidraw)
 
+![The target architecture](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare-1.avif?raw=true)
+
 The target architecture
+
 In the diagram, we can see how our web application is protected behind Cloudflare. Why would we want to do this? There are many reasons and I already covered this topic in a few earlier posts, so we won't spend more time on it.
 
 All the traffic for our web application, both from legitimate users/integrations and bad actors, will be ingested on Cloudflare's global network. Cloudflare will remove bad traffic based on our security configuration, and forward the good requests to our webserver.
