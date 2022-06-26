@@ -16,12 +16,6 @@ Example of a Grafana dashboard, using data from Prometheus:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-4.avif?raw=true)
 
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image2-5.avif?raw=true)
-
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-3.webp?raw=true)
-
-![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
-
 Not needed:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare---Digital-Ocean-1.webp?raw=true)
@@ -89,15 +83,17 @@ In this article, we will see how to achieve just that using Prometheus and one o
 
 Let's dive in!
 
-By the way - if you are interested in Grafana and Smart Home - I wrote about it in the past here.
-Target Architecture
-As usual, I like to illustrate what we are set to achieve with a handy diagram (made with the awesome Excalidraw)
+By the way - if you are interested in Grafana and Smart Home - I wrote about it in the past here: https://www.paolotagliaferri.com/data-visualization-with-telegraf-influxdb-grafana-on-synology-home-automation/
+
+## Target Architecture
+
+As usual, I like to illustrate what we are set to achieve with a handy diagram (made with the awesome Excalidraw) https://excalidraw.com/
 
 ![The target architecture](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/Prometheus---Grafana---Cloudflare-1.avif?raw=true)
 
 The target architecture
 
-In the diagram, we can see how our web application is protected behind Cloudflare. Why would we want to do this? There are many reasons and I already covered this topic in a few earlier posts, so we won't spend more time on it.
+In the diagram, we can see how our web application is protected behind Cloudflare. Why would we want to do this? There are many reasons and I already covered this topic in a few earlier posts, so we won't spend more time on it. https://www.paolotagliaferri.com/secure-https-setup-with-cloudflare/
 
 All the traffic for our web application, both from legitimate users/integrations and bad actors, will be ingested on Cloudflare's global network. Cloudflare will remove bad traffic based on our security configuration, and forward the good requests to our webserver.
 
@@ -105,64 +101,70 @@ Because Cloudflare is acting as a reverse proxy in front of our web application,
 
 We will also use a Prometheus Exporter: this is an adapter that converts third party data formats (such as the data returned by the Cloudflare GraphQL API) into the required input format for Prometheus.
 
-In my example, all the above software (Grafana, Prometheus and the exporter) will be run as Docker containers on a Synology DSM. I explained in the past how to get Grafana going on Synology/Docker, so we will focus on the other two in this article.
+In my example, all the above software (Grafana, Prometheus and the exporter) will be run as Docker containers on a Synology DSM. I explained in the past how to get Grafana going on Synology/Docker, so we will focus on the other two in this article. https://www.paolotagliaferri.com/home-assistant-data-persistence-and-visualization-with-grafana-and-influxdb/
 
-Prometheus configuration
-You can find the Prometheus image on Docker Hub.
+## Prometheus configuration
 
-Before you start up Prometheus, you need to configure it. A simple configuration file is shown below (see the docs for the full information).
+You can find the Prometheus image on Docker Hub. https://hub.docker.com/r/prom/prometheus/
 
+Before you start up Prometheus, you need to configure it. A simple configuration file is shown below (see the docs for the full information). https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+
+```
 # my global config
-
 global:
-scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
-
-# scrape_timeout is set to the global default (10s).
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
 
 # Alertmanager configuration
-
 alerting:
-alertmanagers: - static_configs: - targets: # - alertmanager:9093
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
 
 # A scrape configuration containing exactly one endpoint to scrape:
-
 scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "website_data_fom_cloudflare"
 
-# The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
 
-- job_name: "website_data_fom_cloudflare"
+    static_configs:
+      - targets: ["localhost:9091"]
+```
 
-      # metrics_path defaults to '/metrics'
-      # scheme defaults to 'http'.
+prometheus.yml
 
-      static_configs:
-        - targets: ["localhost:9091"]
-
-  prometheus.yml
-  Here, we define how frequently we will scrape the data sources ( scrape_interval ) and evaluate the rules ( evaluation_timeout ). Rules are used for recording data: for example to pre-record certain expressions to save time when querying. They are also used to define alert conditions and notifications to external services. We will not set this up for the time being.
+Here, we define how frequently we will scrape the data sources ( scrape_interval ) and evaluate the rules ( evaluation_timeout ). Rules are used for recording data: for example to pre-record certain expressions to save time when querying. They are also used to define alert conditions and notifications to external services. We will not set this up for the time being.
 
 We set up a scraping job: it has a job_name and also an endpoint that will be queried by Prometheus to pull the metrics ( targets ). In our case, Prometheus will look at http://localhost:9091/metrics to retrieve the data. This is where we will run our exporter.
 
-Exporter configuration
+## Exporter configuration
+
 As discussed, we need a Prometheus Exporter that is capable of pulling the data from Cloudflare's GraphQL API and adapt it into the format required by Prometheus, then publish it at an endpoint that Prometheus can poll.
 
-For our example, we will use the exporter available at https://github.com/lablabs/cloudflare-exporter. There is also a nice article explaining how it was made and also explaining why the concepts behind our simple home-baked setup can be extended to day-to-day production setups.
+For our example, we will use the exporter available at https://github.com/lablabs/cloudflare-exporter. There is also a nice article explaining how it was made and also explaining why the concepts behind our simple home-baked setup can be extended to day-to-day production setups. https://www.lablabs.io/blog/improving-your-monitoring-setup-by-integrating-cloudflares-analytics-data-into-prometheus-and-grafana
 
 The exporter is also available as a Docker Image on DockerHub, which is exactly what we need.
 
 To configure it, we need to grab a Cloudflare API Token which has Read access for Analytics for the Cloudflare zone we want to monitor. The exporter supports also the Cloudflare Global API Key however following the principle of "least privilege" it is recommended to use the token instead. If you are not sure, refer to the step-by-step guide to create your token.
 
-Configure the Docker Containers (on Synology DSM)
+## Configure the Docker Containers (on Synology DSM)
+
 Let's set up the exporter first. We will use the lablabs/cloudflare_exporter image and set it up with the following environment variables:
 
-CF_ZONES: the zone ID from your Cloudflare Zone's Overview panel.
-CF_API_TOKEN: the Analytics token you created earlier in the Cloudflare Dashboard.
-LISTEN: If you follow the example, use:9091 (this will make the exporter listen on all interfaces on the 9091 port for incoming Prometheus scraping requests).
-The container can run as unprivileged, and since it shouldn't consume too many resources you can configure it with limits just to be on the safe side. In my case, I have used the host network without port mappings.
+- `CF_ZONES`: the zone ID from your Cloudflare Zone's Overview panel.
+- `CF_API_TOKEN`: the Analytics token you created earlier in the Cloudflare Dashboard.
+- `LISTEN`: If you follow the example, use:9091 (this will make the exporter listen on all interfaces on the 9091 port for incoming Prometheus scraping requests).
+  The container can run as unprivileged, and since it shouldn't consume too many resources you can configure it with limits just to be on the safe side. In my case, I have used the host network without port mappings.
 
-The exporter container up and running
+![The exporter container up and running](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image2-5.avif?raw=true)
+
 The exporter container is up and running
+
 Now that we have the exporter up and running, we can test that it is working correctly by hitting the metrics endpoint http://<your DSM IP/hostname>:9091/metrics. If everything is correct, we should see some metrics ready to be consumed by Prometheus, which is what we need to start up next.
 
 First, let's save the prometheus.yml configuration file we described above somewhere on our DSM. I usually create a folder for each container I am running and place all the related files there.
@@ -184,13 +186,20 @@ Assuming you already have Grafana up and running, head to Configuration > Data S
 Add Prometheus as Data Source in Grafana
 Because so far we are being naughty, and we are setting everything up on unencrypted HTTP, all we need to do here is to add the URL to our Prometheus instance (on the configured port) and select Server access. Save and ... that was it!: Grafana can now consume all the metrics stored in Prometheus!
 
+![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-3.webp?raw=true)
+
 Grafana Dashboard
+
 This one is also easy. The folks at Labyrinth Labs have shared a handy dashboard that can be easily imported and used directly. You can also use it as a starting point to create your panels.
 
 Simply import the dashboard and point it to your Prometheus instance, and watch out for the flood of data 🌊
 
+![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/image-6.avif?raw=true)
+
 Labyrinth Labs's Cloudflare Analytics Grafana Dashboard
-Bonus content - Terraformed version
+
+## Bonus content - Terraformed version
+
 Well, it was easy to get it all up and running huh?
 
 To make it a bit more interesting for you, I have created another version in Terraform. It runs the same above stack (Grafana / Prometheus / Exporter) in a Digitalocean VM. Further to that, it exposes the Grafana instance securely via a combination of Cloudflare Access and Cloudflare Tunnel. Feel free to pull the code from https://github.com/Vortexmind/terraform-cloudflare-prometheus-grafana
