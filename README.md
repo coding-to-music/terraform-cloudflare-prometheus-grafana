@@ -25,55 +25,30 @@ sudo systemctl restart grafana-server
 ## Environment variables:
 
 ```java
+// terraform.tvars.example
 
-variable "digitalocean_token" {}
-variable "digitalocean_droplet_image" {}
-variable "digitalocean_droplet_region" {}
-variable "digitalocean_droplet_size" {}
-variable "digitalocean_key_name" {}
-variable "digitalocean_priv_key_path" {}
-variable "cloudflare_domain" {}
-variable "cloudflare_account_id" {}
-variable "cloudflare_tunnel_secret" {}
-variable "cloudflare_cname_record" {}
-variable "cloudflare_ssh_cname_record" {}
-variable "cloudflare_api_token" {}
-variable "cloudflare_analytics_api_token" {}
-variable "user_email" {}
+# Digitalocean Configuration
+digitalocean_token = ""
+digitalocean_droplet_image = "docker-20-04"
+digitalocean_droplet_region = "lon1"
+digitalocean_droplet_size = "s-1vcpu-1gb"
+digitalocean_key_name = ""
+digitalocean_priv_key_path = ""
 
+# Cloudflare Configuration
+cloudflare_domain = ""
+cloudflare_account_id = ""
+cloudflare_tunnel_secret = "Some-very-secret-passphrase-you-only-know"
+cloudflare_cname_record = "grafana"
+cloudflare_ssh_cname_record = "ssh-browser"
 
+# Used by Terraform to manage your Cloudflare resources
+cloudflare_api_token = ""
+# Used by the Prometheus Exporter to pull your analytics from Cloudflare GraphQL
+cloudflare_analytics_api_token = ""
 
-        "AccountTag"   : "${account_id}",
-        "TunnelID"     : "${cloudflare_tunnel_id}",
-        "TunnelName"   : "${cloudflare_tunnel_name}",
-        "TunnelSecret" : "${cloudflare_tunnel_secret}"
-
-github_token: ${{ github.token }}
-
-CF_API_TOKEN=${cloudflare_analytics_api_token}
-
-resource "digitalocean_droplet" "prometheus_analytics" {
-  image  = var.digitalocean_droplet_image
-  name   = "cloudflare-prometheus-analytics"
-  region = var.digitalocean_droplet_region
-  size   = var.digitalocean_droplet_size
-  ssh_keys = [
-    data.digitalocean_ssh_key.default.id
-  ]
-  user_data = templatefile("${path.module}/cloud-init/bootstrap-cloud-init.yaml", {
-      account_id = var.cloudflare_account_id
-      fqdn = local.cloudflare_fqdn
-      ssh_fqdn = local.cloudflare_ssh_fqdn
-
-Configure the Docker Containers (on Synology DSM)
-Let's set up the exporter first. We will use the lablabs/cloudflare_exporter image and set it up with the following environment variables:
-
-CF_ZONES: the zone ID from your Cloudflare Zone's Overview panel.
-CF_API_TOKEN: the Analytics token you created earlier in the Cloudflare Dashboard.
-LISTEN: If you follow the example, use:9091 (this will make the exporter listen on all interfaces on the 9091 port for incoming Prometheus scraping requests).
-
-First, let's save the prometheus.yml configuration file we described above somewhere on our DSM. I usually create a folder for each container I am running and place all the related files there.
-
+# Authorized user for Cloudflare Access
+user_email = ""
 ```
 
 ## GitHub
@@ -86,6 +61,43 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin git@github.com:coding-to-music/terraform-cloudflare-prometheus-grafana.git
 git push -u origin main
+```
+
+## terraform init
+
+```
+tf init
+```
+
+Output:
+
+```
+Initializing the backend...
+
+Initializing provider plugins...
+- Reusing previous version of cloudflare/cloudflare from the dependency lock file
+- Reusing previous version of hashicorp/http from the dependency lock file
+- Reusing previous version of digitalocean/digitalocean from the dependency lock file
+- Installing cloudflare/cloudflare v3.1.0...
+- Installed cloudflare/cloudflare v3.1.0 (signed by a HashiCorp partner, key ID DE413CEC881C3283)
+- Installing hashicorp/http v2.1.0...
+- Installed hashicorp/http v2.1.0 (signed by HashiCorp)
+- Installing digitalocean/digitalocean v2.14.0...
+- Installed digitalocean/digitalocean v2.14.0 (signed by a HashiCorp partner, key ID F82037E524B9C0E8)
+
+Partner and community providers are signed by their developers.
+If you'd like to know more about provider signing, you can read about it here:
+https://www.terraform.io/docs/cli/plugins/signing.html
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
 ```
 
 # 👷 Sample Prometheus & Grafana terraform stack to monitor a Cloudflare zone

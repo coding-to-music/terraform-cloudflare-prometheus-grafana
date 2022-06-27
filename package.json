@@ -4,6 +4,11 @@
   "description": "A sample environment on Digitalocean for monitoring the metrics of a given Cloudflare zone using GraphQL API.",
   "main": "index.js",
   "scripts": {
+    "terraform:init": "terraform init",
+    "terraform:setup": "terraform -install-autocomplete",
+    "terraform:help": "terraform help",
+    "terraform:plan": "terraform plan",
+    "terraform:apply": "terraform apply -auto-approve",
     "deploy": "git add . && git commit -m Build && git push",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
