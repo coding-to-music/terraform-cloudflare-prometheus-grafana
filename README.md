@@ -25,6 +25,24 @@ sudo systemctl restart grafana-server
 ## Environment variables:
 
 ```java
+
+variable "digitalocean_token" {}
+variable "digitalocean_droplet_image" {}
+variable "digitalocean_droplet_region" {}
+variable "digitalocean_droplet_size" {}
+variable "digitalocean_key_name" {}
+variable "digitalocean_priv_key_path" {}
+variable "cloudflare_domain" {}
+variable "cloudflare_account_id" {}
+variable "cloudflare_tunnel_secret" {}
+variable "cloudflare_cname_record" {}
+variable "cloudflare_ssh_cname_record" {}
+variable "cloudflare_api_token" {}
+variable "cloudflare_analytics_api_token" {}
+variable "user_email" {}
+
+
+
         "AccountTag"   : "${account_id}",
         "TunnelID"     : "${cloudflare_tunnel_id}",
         "TunnelName"   : "${cloudflare_tunnel_name}",
