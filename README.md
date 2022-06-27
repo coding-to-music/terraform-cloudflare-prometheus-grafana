@@ -160,9 +160,13 @@ d9ad4961bf5e   grafana/grafana:latest   "/run.sh"                7 minutes ago  
 4d45cbc59cf9   prom/prometheus:latest   "/bin/prometheus --c…"   7 minutes ago   Up 7 minutes   0.0.0.0:9090->9090/tcp, :::9090->9090/tcp   scripts_prometheus_1
 ```
 
+## view open files using `lsof``
+
 ```
 sudo lsof -n -P -i +c 13
 ```
+
+Output:
 
 ```
 COMMAND         PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
@@ -175,6 +179,93 @@ docker-proxy  39818            root    4u  IPv6 174878      0t0  TCP *:3000 (LIS
 sshd          77551            root    4u  IPv4 340011      0t0  TCP here->there:49666 (ESTABLISHED)
 systemd-resol 89119 systemd-resolve   12u  IPv4 386895      0t0  UDP 127.0.0.53:53
 systemd-resol 89119 systemd-resolve   13u  IPv4 386896      0t0  TCP 127.0.0.53:53 (LISTEN)
+```
+
+## sudo systemctl status
+
+```
+sudo systemctl status
+```
+
+```
+● cloudflare-prometheus-analytics
+    State: degraded
+     Jobs: 0 queued
+   Failed: 1 units
+    Since: Mon 2022-06-27 18:44:35 UTC; 32min ago
+   CGroup: /
+           ├─user.slice
+           │ └─user-0.slice
+           │   ├─user@0.service …
+           │   │ └─init.scope
+           │   │   ├─115561 /lib/systemd/systemd --user
+           │   │   └─115563 (sd-pam)
+           │   └─session-5.scope
+           │     ├─115551 sshd: root@pts/0
+           │     ├─115646 -bash
+           │     ├─115655 sudo systemctl status
+           │     ├─115658 systemctl status
+           │     └─115659 pager
+           ├─init.scope
+           │ ├─  1 /lib/systemd/systemd --system --deserialize 32
+           │ └─352 bpfilter_umh
+           └─system.slice
+             ├─containerd.service …
+             │ ├─  750 /usr/bin/containerd
+             │ ├─39718 /usr/bin/containerd-shim-runc-v2 -namespace moby -id 4d45cbc59cf995c78cd38a69279c32d260c43d68276f701d06f45b58cd8b3dd1 -address /run/containerd/containerd.sock
+             │ ├─39737 /bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.console.libraries=/usr/share/prometheus/console_libraries --web.console.templates=/usr/share/prometheus/consoles
+             │ ├─39831 /usr/bin/containerd-shim-runc-v2 -namespace moby -id d9ad4961bf5e8f5bb69d353fde37706a602c8ced102f928f4741787475e17f9f -address /run/containerd/containerd.sock
+             │ └─39851 grafana-server --homepath=/usr/share/grafana --config=/etc/grafana/grafana.ini --packaging=docker cfg:default.log.mode=console cfg:default.paths.data=/var/lib/grafana cfg:default.paths.logs=/var/log/grafana cfg:default.paths.plugins=/var/lib/g>
+             ├─systemd-networkd.service
+             │ └─89106 /lib/systemd/systemd-networkd
+             ├─systemd-udevd.service
+             │ ├─ 17487 /lib/systemd/systemd-udevd
+             │ ├─115656 /lib/systemd/systemd-udevd
+             │ └─115657 /lib/systemd/systemd-udevd
+             ├─cron.service
+             │ └─725 /usr/sbin/cron -f
+             ├─system-serial\x2dgetty.slice
+             │ └─serial-getty@ttyS0.service
+             │   └─753 /sbin/agetty -o -p -- \u --keep-baud 115200,38400,9600 ttyS0 vt220
+             ├─docker.service …
+             │ ├─  810 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+             │ ├─39700 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 9090 -container-ip 172.18.0.3 -container-port 9090
+             │ ├─39704 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 9090 -container-ip 172.18.0.3 -container-port 9090
+             │ ├─39814 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 3000 -container-ip 172.18.0.4 -container-port 3000
+             │ └─39818 /usr/bin/docker-proxy -proto tcp -host-ip :: -host-port 3000 -container-ip 172.18.0.4 -container-port 3000
+             ├─polkit.service
+             │ └─4122 /usr/lib/policykit-1/polkitd --no-debug
+             ├─networkd-dispatcher.service
+             │ └─114182 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+             ├─multipathd.service
+             │ └─506 /sbin/multipathd -d -s
+             ├─accounts-daemon.service
+             │ └─67277 /usr/lib/accountsservice/accounts-daemon
+             ├─systemd-journald.service
+             │ └─89125 /lib/systemd/systemd-journald
+             ├─atd.service
+             │ └─743 /usr/sbin/atd -f
+             ├─unattended-upgrades.service
+             │ └─791 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+             ├─ssh.service
+             │ └─29149 sshd: /usr/sbin/sshd -D [listener] 0 of 10-100 startups
+             ├─snapd.service
+             │ └─51890 /usr/lib/snapd/snapd
+             ├─uuidd.service
+             │ └─53589 /usr/sbin/uuidd --socket-activation
+             ├─rsyslog.service
+             │ └─111845 /usr/sbin/rsyslogd -n -iNONE
+             ├─systemd-resolved.service
+             │ └─89119 /lib/systemd/systemd-resolved
+             ├─dbus.service
+             │ └─726 /usr/bin/dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+             ├─systemd-timesyncd.service
+             │ └─89218 /lib/systemd/systemd-timesyncd
+             ├─system-getty.slice
+             │ └─getty@tty1.service
+             │   └─756 /sbin/agetty -o -p -- \u --noclear tty1 linux
+             └─systemd-logind.service
+               └─739 /lib/systemd/systemd-logind
 ```
 
 # 👷 Sample Prometheus & Grafana terraform stack to monitor a Cloudflare zone
