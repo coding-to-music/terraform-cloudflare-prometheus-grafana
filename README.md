@@ -100,6 +100,53 @@ rerun this command to reinitialize your working directory. If you forget, other
 commands will detect it and remind you to do so if necessary.
 ```
 
+## terraform apply
+
+```
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + success_message = (known after apply)
+cloudflare_access_ca_certificate.ssh_short_lived: Creating...
+cloudflare_access_ca_certificate.ssh_short_lived: Creation complete after 0s [id=e2cb52dc8d3af48a5e1b6c288d43638ea44c504e80caaf39]
+digitalocean_droplet.prometheus_analytics: Creating...
+digitalocean_droplet.prometheus_analytics: Still creating... [10s elapsed]
+digitalocean_droplet.prometheus_analytics: Still creating... [20s elapsed]
+digitalocean_droplet.prometheus_analytics: Still creating... [30s elapsed]
+digitalocean_droplet.prometheus_analytics: Still creating... [40s elapsed]
+digitalocean_droplet.prometheus_analytics: Creation complete after 43s [id=306019345]
+data.digitalocean_droplet.prometheus_analytics: Reading...
+digitalocean_project.cloudflare_prometheus_analytics: Creating...
+digitalocean_firewall.cloudflare_prometheus_analytics_fw: Creating...
+data.digitalocean_droplet.prometheus_analytics: Read complete after 0s [name=cloudflare-prometheus-analytics]
+digitalocean_firewall.cloudflare_prometheus_analytics_fw: Creation complete after 0s [id=]
+digitalocean_project.cloudflare_prometheus_analytics: Creation complete after 4s [id=]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+success_message = <<EOT
+
+    Your droplet is up and running at ip_address
+
+    Direct SSH Command (only allowed from ip_address :
+        ssh -i /home/tmc/.ssh root@ip_address
+
+    Or navigate to https://ssh-browser.example.com to use Browser Based authentication.
+
+    It takes some time for the Droplet to boot up and start the stack. To check progress, SSH in the droplet and run
+    less /var/log/cloud-init-output.log
+
+    Once startup is complete, go to https://grafana.example.com to reach your Grafana instance. The instance is behind Cloudflare
+    Access protection, you will need to enter your email address to recieve an OTP token.
+    After Cloudflare Access authentication, use the default `admin` (username) `admin` (password) to authenticate in Grafana.
+
+    Remember to:
+     - Add your Prometheus Data Source in Grafana (use http://prometheus:9090 for the URL)
+     - Import the Grafana dashboard for a quick start: https://grafana.com/grafana/dashboards/13133
+```
+
 # 👷 Sample Prometheus & Grafana terraform stack to monitor a Cloudflare zone
 
 A sample environment on Digitalocean for monitoring the metrics of a given Cloudflare zone using GraphQL API.
