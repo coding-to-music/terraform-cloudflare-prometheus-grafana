@@ -147,6 +147,36 @@ success_message = <<EOT
      - Import the Grafana dashboard for a quick start: https://grafana.com/grafana/dashboards/13133
 ```
 
+## view what is running on the new droplet
+
+```
+root@cloudflare-prometheus-analytics:~# docker container ls
+```
+
+```
+root@cloudflare-prometheus-analytics:~# docker container ls
+CONTAINER ID   IMAGE                    COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+d9ad4961bf5e   grafana/grafana:latest   "/run.sh"                7 minutes ago   Up 7 minutes   0.0.0.0:3000->3000/tcp, :::3000->3000/tcp   scripts_grafana_1
+4d45cbc59cf9   prom/prometheus:latest   "/bin/prometheus --c…"   7 minutes ago   Up 7 minutes   0.0.0.0:9090->9090/tcp, :::9090->9090/tcp   scripts_prometheus_1
+```
+
+```
+sudo lsof -n -P -i +c 13
+```
+
+```
+COMMAND         PID            USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+sshd          29149            root    3u  IPv4 160205      0t0  TCP *:22 (LISTEN)
+sshd          29149            root    4u  IPv6 160207      0t0  TCP *:22 (LISTEN)
+docker-proxy  39700            root    4u  IPv4 174230      0t0  TCP *:9090 (LISTEN)
+docker-proxy  39704            root    4u  IPv6 174238      0t0  TCP *:9090 (LISTEN)
+docker-proxy  39814            root    4u  IPv4 174870      0t0  TCP *:3000 (LISTEN)
+docker-proxy  39818            root    4u  IPv6 174878      0t0  TCP *:3000 (LISTEN)
+sshd          77551            root    4u  IPv4 340011      0t0  TCP here->there:49666 (ESTABLISHED)
+systemd-resol 89119 systemd-resolve   12u  IPv4 386895      0t0  UDP 127.0.0.53:53
+systemd-resol 89119 systemd-resolve   13u  IPv4 386896      0t0  TCP 127.0.0.53:53 (LISTEN)
+```
+
 # 👷 Sample Prometheus & Grafana terraform stack to monitor a Cloudflare zone
 
 A sample environment on Digitalocean for monitoring the metrics of a given Cloudflare zone using GraphQL API.
