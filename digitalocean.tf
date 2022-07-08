@@ -16,6 +16,7 @@ resource "digitalocean_droplet" "prometheus_analytics" {
   name   = "cloudflare-prometheus-analytics"
   region = var.digitalocean_droplet_region
   size   = var.digitalocean_droplet_size
+  monitoring = "true"
   ssh_keys = [
     data.digitalocean_ssh_key.default.id
   ]
