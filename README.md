@@ -16,6 +16,23 @@ Example of a Grafana dashboard, using data from Prometheus:
 
 ![Grafana screenshot](https://github.com/coding-to-music/terraform-cloudflare-prometheus-grafana/blob/main/images/grafana_prometheus.png?raw=true)
 
+## Digitalocean Droplet Prices
+
+https://github.com/andrewsomething/do-api-slugs
+
+https://slugs.do-api.dev
+
+```
+# https://slugs.do-api.dev/
+
+# s-1vcpu-512mb-10gb  $4    10GB
+# s-1vcpu-1gb         $6    25GB
+# s-1vcpu-2gb         $12   50GB
+# s-2vcpu-2gb         $18   60GB
+# s-2vcpu-4gb         $24   80GB
+# s-4vcpu-8gb         $48   160GB
+```
+
 ## Restart grafana-server:
 
 ```
