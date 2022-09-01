@@ -33,6 +33,17 @@ https://slugs.do-api.dev
 # s-4vcpu-8gb         $48   160GB
 ```
 
+## Status
+
+Grafana
+
+- set up Prometheus data source
+- load dashboards
+
+```
+
+```
+
 ## Restart grafana-server:
 
 ```
