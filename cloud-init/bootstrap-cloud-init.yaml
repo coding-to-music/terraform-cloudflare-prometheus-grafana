@@ -105,3 +105,4 @@ runcmd:
   - systemctl restart ssh
   - cd /opt/scripts
   - docker-compose up -d
+  - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
