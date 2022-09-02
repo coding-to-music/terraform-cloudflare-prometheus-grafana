@@ -43,6 +43,8 @@ terraform apply -auto-approve
 
 ssh -i /path/to/ssh-keyfile root@ip-address
 
+https://dev.to/koddr/quick-how-to-clone-your-private-repository-from-github-to-server-droplet-vds-etc-39jm
+
 ssh-keygen
 
 put the id_rsa.pub contents into GitHub https://github.com/settings/keys
