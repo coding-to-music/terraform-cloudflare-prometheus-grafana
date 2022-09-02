@@ -33,6 +33,16 @@ https://slugs.do-api.dev
 # s-4vcpu-8gb         $48   160GB
 ```
 
+## Quick Summary
+
+terraform init
+
+terraform plan
+
+terraform apply -auto-approve
+
+terraform destroy -auto-approve
+
 ## Status
 
 Grafana
