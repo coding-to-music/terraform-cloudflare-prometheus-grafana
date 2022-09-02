@@ -41,6 +41,40 @@ terraform plan
 
 terraform apply -auto-approve
 
+ssh -i /path/to/ssh-keyfile root@ip-address
+
+ssh-keygen
+
+put the id_rsa.pub contents into GitHub https://github.com/settings/keys
+
+verify can clone from GitHub:
+
+ssh -vT git@github.com
+
+clone the docker project
+
+run that
+
+need to install terraform
+
+https://www.terraform.io/downloads
+
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+sudo apt update && sudo apt install terraform
+
+terraform -v
+
+docker-compose -f docker-compose-step1.yml up
+
+docker-compose -f docker-compose-step2.yml up
+
+docker-compose -f docker-compose-step3.yml up
+
+docker-compose -f docker-compose-step4.yml up
+
 terraform destroy -auto-approve
 
 ## Status
