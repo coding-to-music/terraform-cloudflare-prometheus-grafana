@@ -106,8 +106,3 @@ runcmd:
   - cd /opt/scripts
   - docker-compose up -d
   - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
-#
-# grafana-setup:
-#   build: grafana-setup/
-#   depends_on:
-#     - grafana

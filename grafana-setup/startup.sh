@@ -1,4 +1,7 @@
+# from https://github.com/coding-to-music/grafana-monitoring-elastic-tick-kafka-ksql-c3-prometheus
+
 #!/usr/bin/env bash
+
 set -x
 
 if [ -z "${SERVICE_GRAFANA_USERNAME}" ] ; then

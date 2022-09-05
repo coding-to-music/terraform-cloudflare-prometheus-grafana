@@ -1,3 +1,8 @@
+
+# Chromebook Configuration so you can ssh to the droplet
+chromebook_ipv4_address="222.2.222.22"
+chromebook_priv_key_path = ""
+
 # Digitalocean Configuration
 digitalocean_token = ""
 digitalocean_droplet_image = "docker-20-04"

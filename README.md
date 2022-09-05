@@ -218,8 +218,11 @@ success_message = <<EOT
 
     Your droplet is up and running at ip_address
 
-    Direct SSH Command (only allowed from ip_address :
-        ssh -i /home/tmc/.ssh root@ip_address
+    Direct SSH Command (only allowed from digitalocean_ip_address :
+        ssh -i /home/tmc/.ssh root@digitalocean_ip_address
+
+    Direct SSH Command (only allowed from chromebook_ip_address :
+        ssh -i /home/tmc/.ssh root@chromebook_ip_address
 
     Or navigate to https://ssh-browser.example.com to use Browser Based authentication.
 

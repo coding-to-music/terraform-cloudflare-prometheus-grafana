@@ -32,12 +32,25 @@ resource "digitalocean_droplet" "prometheus_analytics" {
       user = local.user_from_mail
   })
 
+#
+# grafana-setup:
+#   build: grafana-setup/
+#   depends_on:
+#     - grafana
+
+  # connection digitalocean_droplet {
+  #     user  = "root"
+  #     type  = "ssh"
+  #     host  = self.ipv4_address
+  #     private_key = file(var.digitalocean_priv_key_path)
+  #     timeout = "10m"
+  # }
   connection {
       user  = "root"
       type  = "ssh"
-      host  = self.ipv4_address
-      private_key = file(var.digitalocean_priv_key_path)
-      timeout = "10m"
+      host  = self.chromebook_ipv4_address
+      private_key = file(var.chromebook_priv_key_path)
+      # timeout = "10m"
   }
 }
 
