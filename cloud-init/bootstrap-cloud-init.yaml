@@ -7,11 +7,6 @@ package_reboot_if_required: true
 packages:
   - wget
 
-# grafana-setup:
-#   build: grafana-setup/
-#   depends_on:
-#     - grafana
-
 write_files:
   - content: |
       {
@@ -111,3 +106,8 @@ runcmd:
   - cd /opt/scripts
   - docker-compose up -d
   - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
+#
+# grafana-setup:
+#   build: grafana-setup/
+#   depends_on:
+#     - grafana
