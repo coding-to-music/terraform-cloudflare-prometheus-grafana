@@ -7,6 +7,11 @@ package_reboot_if_required: true
 packages:
   - wget
 
+# grafana-setup:
+#   build: grafana-setup/
+#   depends_on:
+#     - grafana
+
 write_files:
   - content: |
       {
