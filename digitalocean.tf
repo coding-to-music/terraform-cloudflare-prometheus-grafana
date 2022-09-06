@@ -48,8 +48,9 @@ resource "digitalocean_droplet" "prometheus_analytics" {
   connection {
       user  = "root"
       type  = "ssh"
-      host  = self.chromebook_ipv4_address
-      private_key = file(var.chromebook_priv_key_path)
+      host  = var.chromebook_ipv4_address
+      # private_key = file(var.chromebook_priv_key_path)
+      private_key = file(var.digitalocean_priv_key_path)
       # timeout = "10m"
   }
 }

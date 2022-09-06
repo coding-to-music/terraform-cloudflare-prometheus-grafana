@@ -26,6 +26,8 @@ locals {
     user_from_mail = split("@", var.user_email)[0]
 }
 
+variable "chromebook_ipv4_address" {}
+variable "chromebook_priv_key_path" {}
 variable "digitalocean_token" {}
 variable "digitalocean_droplet_image" {}
 variable "digitalocean_droplet_region" {}

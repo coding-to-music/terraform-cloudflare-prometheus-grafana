@@ -43,7 +43,7 @@ terraform apply -auto-approve
 
 ssh -i /path/to/ssh-keyfile root@ip-address
 
-k. To check progress, SSH in the droplet and run
+To check progress, SSH in the droplet and run
 
 ```
 less /var/log/cloud-init-output.log
