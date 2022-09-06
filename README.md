@@ -41,6 +41,8 @@ terraform plan
 
 terraform apply -auto-approve
 
+terraform destroy -auto-approve
+
 ssh -i /path/to/ssh-keyfile root@ip-address
 
 To check progress, SSH in the droplet and run
@@ -63,15 +65,17 @@ ssh-keygen
 
 put the id_rsa.pub contents into GitHub https://github.com/settings/keys
 
-verify can clone from GitHub:
+verify can connect to GitHub:
 
+```
 ssh -vT git@github.com
+```
 
 clone the docker project
 
 run that
 
-need to install terraform
+### Install terraform
 
 https://www.terraform.io/downloads
 
@@ -82,16 +86,6 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update && sudo apt install terraform
 
 terraform -v
-
-docker-compose -f docker-compose-step1.yml up
-
-docker-compose -f docker-compose-step2.yml up
-
-docker-compose -f docker-compose-step3.yml up
-
-docker-compose -f docker-compose-step4.yml up
-
-terraform destroy -auto-approve
 
 ## Status
 
