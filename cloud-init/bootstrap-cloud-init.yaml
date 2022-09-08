@@ -60,6 +60,7 @@ write_files:
             - 9090:9090
           volumes:
             - /opt/scripts/prometheus.yml:/etc/prometheus/prometheus.yml
+            # - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
           depends_on:
             - prometheus_exporter
           networks:
