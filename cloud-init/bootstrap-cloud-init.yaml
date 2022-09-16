@@ -10,7 +10,6 @@ packages:
   - xrdp
   - virtualbox
   - virtualbox-ext-pack
-  - terraform
   - firefox
 
 write_files:
@@ -98,6 +97,7 @@ write_files:
             - GF_AUTH_ANONYMOUS_ENABLED=true
             - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
             - GF_AUTH_DISABLE_LOGIN_FORM=true
+            - XDG_CURRENT_DESKTOP=ubuntu:GNOME gnome-control-center
 
       networks:
         base_net:
@@ -117,6 +117,10 @@ runcmd:
 
   - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
   - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
+
+  - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  - sudo apt-get update && sudo apt-get install consul terraform nomad vault packer
 
   - mkdir -p /etc/cloudflared
   - mkdir -p /opt/scripts
