@@ -107,22 +107,22 @@ runcmd:
   - sudo apt-get update && sudo apt-get upgrade -y
   - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
   # - adduser ${non-root-user} (password: e.g paste se7ye8pc5hs0 )
-  - adduser --gecos "" --disabled-password ${non-root-user}
-  - chpasswd <<<"${non-root-user}:${non-root-user-password}"
-  - usermod -aG sudo,adm ${non-root-user} && su ${non-root-user}
+  # - adduser --gecos "" --disabled-password ${non-root-user}
+  # - chpasswd <<<"${non-root-user}:${non-root-user-password}"
+  # - usermod -aG sudo,adm ${non-root-user} && su ${non-root-user}
 
-  - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && sudo apt update \
-    && sudo apt install gh -y
+  # - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+  #   && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+  #   && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  #   && sudo apt update \
+  #   && sudo apt install gh -y
 
   - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
   - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
 
-  - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
-  - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
-  - sudo apt-get update && sudo apt-get install consul terraform nomad vault packer
+  # - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+  # - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+  # - sudo apt-get update && sudo apt-get install consul terraform nomad vault packer
 
   - mkdir -p /etc/cloudflared
   - mkdir -p /opt/scripts
