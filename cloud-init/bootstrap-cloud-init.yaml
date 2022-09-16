@@ -135,7 +135,7 @@ runcmd:
   - echo -n "${trusted_pub_key}" >> /etc/ssh/ca.pub
   - echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config
   - echo "TrustedUserCAKeys /etc/ssh/ca.pub" >> /etc/ssh/sshd_config
-  - adduser --disabled-password --gecos "" ${user}
+  # - adduser --disabled-password --gecos "" ${user}
   - systemctl restart ssh
   - cd /opt/scripts
   - docker-compose up -d
