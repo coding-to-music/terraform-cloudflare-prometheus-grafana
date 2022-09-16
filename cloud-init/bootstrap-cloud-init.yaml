@@ -6,6 +6,12 @@ package_reboot_if_required: true
 
 packages:
   - wget
+  - xfce4
+  - xrdp
+  - virtualbox
+  - virtualbox-ext-pack
+  - terraform
+  - firefox
 
 write_files:
   - content: |
@@ -98,7 +104,20 @@ write_files:
 
     path: /opt/scripts/docker-compose.yml
 runcmd:
+  - sudo apt-get update && sudo apt-get upgrade -y
   - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
+  # - adduser xrdpuser (password : e.g paste se7ye8pc5hs0 )
+  # - usermod -aG sudo,adm xrdpuser && su xrdpuser
+
+  - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && sudo apt update \
+    && sudo apt install gh -y
+
+  - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
+  - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
+
   - mkdir -p /etc/cloudflared
   - mkdir -p /opt/scripts
   - wget -O /tmp/cloudflared-linux-amd64.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
@@ -114,4 +133,3 @@ runcmd:
   - systemctl restart ssh
   - cd /opt/scripts
   - docker-compose up -d
-  - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
