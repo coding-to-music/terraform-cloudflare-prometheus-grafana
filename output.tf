@@ -17,7 +17,7 @@ output "success_message" {
 
     or
 
-        tail -500 /var/log/cloud-init-output.log
+        watch tail -100 /var/log/cloud-init-output.log
 
     Once startup is complete, go to https://${local.cloudflare_fqdn} to reach your Grafana instance. The instance is behind Cloudflare 
     Access protection, you will need to enter your ${var.user_email} address to recieve an OTP token.
