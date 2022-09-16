@@ -544,3 +544,40 @@ For example, you can see the comments it left when I committed my initial templa
 At the very least this is much better than managing all your set-up manually and then forgetting open ports! 💣
 
 I hope you enjoyed this short tutorial. Let me know if you have any comments and thanks for reading!
+
+# Destroy Resources or everything
+
+https://www.devopsschool.com/blog/how-to-destroy-one-specific-resource-from-tf-file-in-terraform/
+
+```
+terraform state list
+```
+
+Output
+
+```
+data.cloudflare_ip_ranges.cloudflare
+data.cloudflare_zones.configured_zone
+data.digitalocean_droplet.prometheus_analytics
+data.digitalocean_ssh_key.default
+data.http.my_ip
+cloudflare_access_application.prometheus_analytics
+cloudflare_access_application.ssh_browser
+cloudflare_access_ca_certificate.ssh_short_lived
+cloudflare_access_policy.prometheus_analytics_policy
+cloudflare_access_policy.ssh_policy
+cloudflare_argo_tunnel.prometheus_analytics
+cloudflare_record.prometheus_app
+cloudflare_record.ssh_app
+digitalocean_droplet.prometheus_analytics
+digitalocean_firewall.cloudflare_prometheus_analytics_fw
+digitalocean_project.cloudflare_prometheus_analytics
+```
+
+```
+terraform destroy -target digitalocean_droplet.prometheus_analytics
+```
+
+```
+terraform destroy -auto-approve
+```
