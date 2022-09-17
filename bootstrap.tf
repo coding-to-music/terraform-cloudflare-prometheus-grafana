@@ -42,5 +42,6 @@ variable "cloudflare_ssh_cname_record" {}
 variable "cloudflare_api_token" {}
 variable "cloudflare_analytics_api_token" {}
 variable "user_email" {}
-variable "non-root-user" {}
-variable "non-root-user-password" {}
+# variable "another_non_root_user" {}
+# variable "non_root_user" {}
+# variable "non_root_user_password" {}

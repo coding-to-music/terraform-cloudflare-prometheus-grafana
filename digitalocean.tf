@@ -29,9 +29,10 @@ resource "digitalocean_droplet" "prometheus_analytics" {
       cloudflare_tunnel_secret = cloudflare_argo_tunnel.prometheus_analytics.secret
       trusted_pub_key = cloudflare_access_ca_certificate.ssh_short_lived.public_key
       cloudflare_analytics_api_token = var.cloudflare_analytics_api_token
-      user = local.user_from_mail
-      non-root-user = var.non-root-user
-      non-root-user-password = var.non-root-user-password
+      # user = local.user_from_mail
+      # user = var.another_non_root_user
+      # non_root_user = var.non_root_user
+      # non_root_user_password = var.non_root_user_password
   })
 
 #

@@ -581,3 +581,15 @@ terraform destroy -target digitalocean_droplet.prometheus_analytics
 ```
 terraform destroy -auto-approve
 ```
+
+### holding area
+
+```
+  # - adduser ${non_root_user} (password: e.g paste se7ye8pc5hs0 )
+  # - adduser --gecos "" --disabled-password ${non_root_user}
+  # - chpasswd <<<"${non_root_user}:${non_root_user_password}"
+  # - usermod -aG sudo,adm ${non_root_user} && su ${non_root_user}
+
+  # - adduser --disabled-password --gecos "" ${another_non_root_user}
+
+```

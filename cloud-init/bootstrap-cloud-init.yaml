@@ -106,10 +106,6 @@ write_files:
 runcmd:
   - sudo apt-get update && sudo apt-get upgrade -y
   - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
-  # - adduser ${non-root-user} (password: e.g paste se7ye8pc5hs0 )
-  # - adduser --gecos "" --disabled-password ${non-root-user}
-  # - chpasswd <<<"${non-root-user}:${non-root-user-password}"
-  # - usermod -aG sudo,adm ${non-root-user} && su ${non-root-user}
 
   # - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
   #   && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -135,7 +131,7 @@ runcmd:
   - echo -n "${trusted_pub_key}" >> /etc/ssh/ca.pub
   - echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config
   - echo "TrustedUserCAKeys /etc/ssh/ca.pub" >> /etc/ssh/sshd_config
-  # - adduser --disabled-password --gecos "" ${user}
+  - adduser --disabled-password --gecos "" abc
   - systemctl restart ssh
   - cd /opt/scripts
   - docker-compose up -d
