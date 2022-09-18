@@ -44,8 +44,8 @@ output "digitalocean_image_name" {
 }
 
 resource "digitalocean_droplet" "prometheus_analytics" {
-  # image  = var.digitalocean_droplet_image
-  image = "${data.digitalocean_image.image_details.image}"
+  image  = var.digitalocean_droplet_image
+  # image = "${data.digitalocean_image.image_details.image}"
   name   = "cloudflare-prometheus-analytics"
   region = var.digitalocean_droplet_region
   size   = var.digitalocean_droplet_size
