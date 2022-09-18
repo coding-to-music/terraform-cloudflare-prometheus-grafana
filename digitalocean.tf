@@ -13,6 +13,9 @@ data "digitalocean_ssh_key" "default" {
 
 data "digitalocean_image" "image_details" {
   name = "cloudflare-prometheus-analytics"
+  # name_regex = "cloudflare-prometheus-analytics*"
+  # region = var.digitalocean_droplet_region
+  # most_recent = true
 }
 
 output "digitalocean_image_id" {
