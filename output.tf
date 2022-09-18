@@ -6,7 +6,7 @@ output "success_message" {
     Direct SSH Command (only allowed from Chromebook ${chomp(var.chromebook_ipv4_address)} : 
         ssh -i ${var.chromebook_priv_key_path} root@${digitalocean_droplet.prometheus_analytics.ipv4_address}
 
-    Direct SSH Command (only allowed from Development Droplet ${chomp(data.http.my_ip.body)} : 
+    Direct SSH Command (only allowed from Development Droplet ${chomp(data.http.my_ip.response_body)} : 
         ssh -i ${var.digitalocean_priv_key_path} root@${digitalocean_droplet.prometheus_analytics.ipv4_address}
 
     Or navigate to https://${local.cloudflare_ssh_fqdn} to use Browser Based authentication.
@@ -26,7 +26,6 @@ output "success_message" {
     Remember to:
      - Add your Prometheus Data Source in Grafana (use http://prometheus:9090 for the URL)
      - Import the Grafana dashboard for a quick start: https://grafana.com/grafana/dashboards/13133
-
 
     EOF
 }

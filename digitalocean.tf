@@ -11,12 +11,42 @@ data "digitalocean_ssh_key" "default" {
   name       = var.digitalocean_key_name  
 }
 
+data "digitalocean_image" "image_details" {
+  name = "cloudflare-prometheus-analytics"
+}
+
+output "digitalocean_image_id" {
+  value = data.digitalocean_image.image_details.image
+  description = "image_id"
+}
+
+output "digitalocean_image_min_disk_size" {
+  value = data.digitalocean_image.image_details.min_disk_size
+  description = "min_disk_size"
+}
+
+output "digitalocean_image_size_gigabytes" {
+  value = data.digitalocean_image.image_details.size_gigabytes
+  description = "size_gigabytes"
+}
+
+output "digitalocean_image_type" {
+  value = data.digitalocean_image.image_details.type
+  description = "type"
+}
+
+output "digitalocean_image_name" {
+  value = data.digitalocean_image.image_details.name
+  description = "name"
+}
+
 resource "digitalocean_droplet" "prometheus_analytics" {
-  image  = var.digitalocean_droplet_image
+  # image  = var.digitalocean_droplet_image
+  image = "${data.digitalocean_image.image_details.image}"
   name   = "cloudflare-prometheus-analytics"
   region = var.digitalocean_droplet_region
   size   = var.digitalocean_droplet_size
-  monitoring = "true"
+  monitoring = true
   ssh_keys = [
     data.digitalocean_ssh_key.default.id
   ]
@@ -77,7 +107,7 @@ resource "digitalocean_firewall" "cloudflare_prometheus_analytics_fw" {
   inbound_rule {
     protocol    = "tcp"
     port_range  = "22"
-    source_addresses = concat(["${chomp(data.http.my_ip.body)}"],data.cloudflare_ip_ranges.cloudflare.cidr_blocks)
+    source_addresses = concat(["${chomp(data.http.my_ip.response_body)}"],data.cloudflare_ip_ranges.cloudflare.cidr_blocks)
   }
 
   inbound_rule {
