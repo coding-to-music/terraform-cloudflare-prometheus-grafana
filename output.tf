@@ -27,6 +27,9 @@ output "success_message" {
      - Add your Prometheus Data Source in Grafana (use http://prometheus:9090 for the URL)
      - Import the Grafana dashboard for a quick start: https://grafana.com/grafana/dashboards/13133
 
+    ${data.cloudflare_zones.configured_zone.zones[0].id}
+    ${data.cloudflare_zones.configured_zone.zones[0].name}
+
     EOF
 }
     # user is ${var.user_email}
