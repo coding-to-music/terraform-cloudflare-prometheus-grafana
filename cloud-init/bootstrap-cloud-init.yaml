@@ -107,8 +107,8 @@ write_files:
 
     path: /opt/scripts/docker-compose.yml
 runcmd:
-  - sudo apt-get update && sudo apt-get upgrade -y
-  - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
+  # - sudo apt-get update && sudo apt-get upgrade -y
+  # - curl -sSL https://repos.insights.digitalocean.com/install.sh | sudo bash
 
   # - curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
   #   && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -116,17 +116,19 @@ runcmd:
   #   && sudo apt update \
   #   && sudo apt install gh -y
 
-  - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
-  - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
+  # - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
+  # - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
+
+  # - sudo apt-get install ngrep tcpdump perf gdb nmap-ncat strace htop sysstat tc
 
   # - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
   # - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
   # - sudo apt-get update && sudo apt-get install consul terraform nomad vault packer
 
-  - mkdir -p /etc/cloudflared
-  - mkdir -p /opt/scripts
-  - wget -O /tmp/cloudflared-linux-amd64.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
-  - dpkg -i /tmp/cloudflared-linux-amd64.deb
+  # - mkdir -p /etc/cloudflared
+  # - mkdir -p /opt/scripts
+  # - wget -O /tmp/cloudflared-linux-amd64.deb https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+  # - dpkg -i /tmp/cloudflared-linux-amd64.deb
   - cloudflared service install
   - systemctl start cloudflared
   - systemctl enable cloudflared
