@@ -119,8 +119,6 @@ runcmd:
   # - sudo apt-get install ubuntu-desktop mmv htop stacer gnome-software xrdp -y
   # - sudo rm /usr/share/polkit-1/actions/org.freedesktop.color.policy
 
-  # - sudo apt-get install ngrep tcpdump perf gdb nmap-ncat strace htop sysstat tc
-
   # - curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
   # - sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
   # - sudo apt-get update && sudo apt-get install consul terraform nomad vault packer
